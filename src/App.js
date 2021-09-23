@@ -1,9 +1,7 @@
-import './App.css';
+import React from 'react';
 
-function App() {
-  return (
-    <div className="App">Commit</div>
-  );
-}
+const App = () => {
+  return <div>Commit</div>;
+};
 
 export default App;
