@@ -44,6 +44,7 @@ const CryptoContainerBase = ({
 
   const handleAddCrypto = (assetKey) => {
     // if items exist in the list, check to make sure item isn't already in list
+    // create one array to check for symbols and names
     if (cryptoListItems.length) {
       const arrayOne = cryptoListItems.map((item) => item.name.toLowerCase());
       const arrayTwo = cryptoListItems.map((item) => item.symbol.toLowerCase());

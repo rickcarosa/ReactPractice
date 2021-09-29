@@ -8,6 +8,7 @@ const ListItem = ({ cryptoListItems, handleRemoveCrypto }) => {
     <ItemContainer className='container'>
       {cryptoListItems && cryptoListItems.length > 0 && (
         <div>
+          {/* map over list items to show list */}
           {cryptoListItems.map((item, index) => (
             <div className='item-wrapper' key={item.id}>
               <div style={{ display: 'flex' }}>
@@ -39,6 +40,7 @@ const ListItem = ({ cryptoListItems, handleRemoveCrypto }) => {
                   </div>
                   <AlignItems flexDirection='column' alignItems='flex-end'>
                     <AppText color={colors.black} margin='0 0 3px 0'>
+                      {/* utils function to convert to dollar price in USD */}
                       {dollarFormatter(item.market_data.price_usd, 2)}
                     </AppText>
                     <AlignItems>
@@ -59,6 +61,7 @@ const ListItem = ({ cryptoListItems, handleRemoveCrypto }) => {
                           north_east
                         </span>
                       )}
+                      {/* based on negative or positive number change color and make percent  */}
                       <AppText
                         color={
                           item.market_data.percent_change_usd_last_24_hours

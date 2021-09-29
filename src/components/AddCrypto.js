@@ -53,6 +53,7 @@ const AddCrypto = ({
             </AppText>
           </AlignItems>
         )}
+        {/* disable button if no text or data is still fetching */}
         <Button
           disabled={!ticker.length || isCryptoDataFetching}
           onClick={() => handleAddCrypto(ticker)}
