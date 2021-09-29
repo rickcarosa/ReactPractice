@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import CryptoList from '../components/CryptoList';
 import Header from '../components/Header';
 import AddCrypto from '../components/AddCrypto';
@@ -18,44 +18,17 @@ const CryptoContainerBase = ({
   const [cryptoListItems, setCryptoListItems] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
   const [showError, setShowError] = useState(false);
-  const [listRefresh, setListRefresh] = useState(false);
-  const [isUpdating, setIsUpdating] = useState(false);
   const [added, setAdded] = useState(false);
 
-  // const cryptoListItems = useRef([]);
-
-  // console.log('update', isUpdating);
-  // useEffect(() => {
-  //   if (Object.keys(cryptoData).length && image) {
-  //     // console.log('hi');
-  //     // console.log(cryptoData);
-  //     // add logo key value pair to crypto data
-  //     cryptoData.logo = image;
-  //     cryptoListItems.current.push(cryptoData);
-  //   }
-  // }, [cryptoData, image]);
-
+  // add crypto data to list on add
   useEffect(() => {
     if (added) {
+      // add image key
       cryptoData.logo = image;
       setCryptoListItems([...cryptoListItems, cryptoData]);
       setAdded(false);
     }
   }, [added, setAdded, setCryptoListItems, cryptoListItems, cryptoData, image]);
-
-  useEffect(() => {
-    if (isUpdating) {
-      console.log(cryptoListItems);
-      setCryptoListItems([...cryptoListItems]);
-      setIsUpdating(false);
-    }
-  }, [
-    isUpdating,
-    setIsUpdating,
-    setCryptoListItems,
-    cryptoListItems,
-    cryptoData,
-  ]);
 
   const handleShowList = () => {
     setShowList(!showList);
@@ -63,24 +36,15 @@ const CryptoContainerBase = ({
     setShowError(false);
   };
 
+  // remove crypto item from list
   const handleRemoveCrypto = (index) => {
-    // const array = cryptoListItems.current.filter((_, i) => i !== index);
-    // cryptoListItems.current = array;
     const array = cryptoListItems.filter((_, i) => i !== index);
     setCryptoListItems(array);
-    // setListRefresh(true);
   };
 
   const handleAddCrypto = (assetKey) => {
-    // if items in the list, check to make sure item isn't already in list
-    // if (cryptoListItems.current.length) {
+    // if items exist in the list, check to make sure item isn't already in list
     if (cryptoListItems.length) {
-      // const arrayOne = cryptoListItems.current.map((item) =>
-      //   item.name.toLowerCase()
-      // );
-      // const arrayTwo = cryptoListItems.current.map((item) =>
-      //   item.symbol.toLowerCase()
-      // );
       const arrayOne = cryptoListItems.map((item) => item.name.toLowerCase());
       const arrayTwo = cryptoListItems.map((item) => item.symbol.toLowerCase());
 
@@ -114,7 +78,6 @@ const CryptoContainerBase = ({
     }
 
     // if no items in list, run the query for the item
-    // if (!cryptoListItems.current.length) {
     if (!cryptoListItems.length) {
       const cryptoPromise = Promise.all([
         fetchCryptoData(assetKey),
@@ -139,49 +102,27 @@ const CryptoContainerBase = ({
   };
 
   const handleUpdateCrypto = (item) => {
-    // console.log(item);
-    // setIsUpdating(true);
-    // fetchCryptoData(item.symbol);
-
-    const names = cryptoListItems.map((item) => item.name);
-    // for (const name of names) {
-    //   setIsUpdating(true);
-    //   console.log(name);
-    //   fetchCryptoData(name);
-    // }
+    // loop over items to fetch for each crypto in list
     let infoArray = [];
-    for (let i = 0; i < names.length; i++) {
-      infoArray.push(fetchCryptoData(names[i]));
-    }
-    let imageArray = [];
-    for (let i = 0; i < names.length; i++) {
-      imageArray.push(fetchImage(names[i]));
+    for (let i = 0; i < cryptoListItems.length; i++) {
+      infoArray.push(fetchCryptoData(cryptoListItems[i].symbol));
     }
 
-    let array = [];
-    Promise.all(infoArray).then((res) =>
-      res.map((value) => {
-        setIsUpdating(true);
-        array.push(value.value.data.data);
-        console.log('array', array);
-        // return value.value.data.data;
-      })
-    );
-    // setCryptoListItems(array);
-
-    Promise.all(imageArray).then((res) =>
-      res.map(
-        (value) =>
-          (cryptoData.logo =
-            value.value.data.data.profile.contributors.organizations[0].logo)
-      )
-    );
+    // for each item in array, set the new data fetched to the old data
+    // add logo to new data set because it is removed when fetch above runs
+    // set crypto list items to new array returned from map
+    Promise.all(infoArray).then((res) => {
+      let array = res.map((value) => {
+        const newCryptoData = value.value.data.data;
+        const oldCryptoData = cryptoListItems.find(
+          (cd) => cd.symbol === newCryptoData.symbol
+        );
+        newCryptoData.logo = oldCryptoData.logo;
+        return newCryptoData;
+      });
+      setCryptoListItems(array);
+    });
   };
-
-  // console.log('error', showError);
-  // console.log('list', showList);
-  // console.log('cryptoData', cryptoData);
-  // console.log('listItems', cryptoListItems);
 
   return (
     <MainCryptoContainer className={!showList ? 'active-class' : ''}>
@@ -190,10 +131,8 @@ const CryptoContainerBase = ({
           <Header />
           <CryptoList
             handleShowList={handleShowList}
-            // cryptoListItems={cryptoListItems.current}
             cryptoListItems={cryptoListItems}
             handleRemoveCrypto={handleRemoveCrypto}
-            listRefresh={listRefresh}
             image={image}
             handleUpdateCrypto={handleUpdateCrypto}
           />

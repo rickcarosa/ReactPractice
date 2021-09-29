@@ -29,6 +29,7 @@ const isCryptoDataFetching = (state = false, action) => {
 
 const cryptoImage = (state = '', action) => {
   switch (action.type) {
+    // path from api for images, not all cryptos have it
     case 'FETCH_IMAGE_FULFILLED':
       return action.payload.data.data.profile.contributors.organizations[0]
         .logo;

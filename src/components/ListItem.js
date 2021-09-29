@@ -1,20 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ItemContainer, AlignItems, AppText } from './styled-components';
 import { dollarFormatter } from '../utils';
 import colors from '../assets/colors';
 
-const ListItem = ({
-  cryptoListItems,
-  handleUpdateCrypto,
-  image,
-  handleRemoveCrypto,
-}) => {
-  //   useEffect(() => {
-  //     if (image) {
-  //       cryptoListItems[0].logo = image;
-  //     }
-  //   }, [image, cryptoListItems]);
-  //   console.log(cryptoListItems);
+const ListItem = ({ cryptoListItems, handleRemoveCrypto }) => {
   return (
     <ItemContainer className='container'>
       {cryptoListItems && cryptoListItems.length > 0 && (
@@ -91,12 +80,6 @@ const ListItem = ({
               </div>
               <div className='remove'>
                 <div onClick={() => handleRemoveCrypto(index)}>Remove</div>
-                <div
-                  style={{ marginLeft: '10px' }}
-                  onClick={() => handleUpdateCrypto(item)}
-                >
-                  Update
-                </div>
               </div>
               <hr style={{ opacity: '0.2', margin: '20px 0' }} />
             </div>

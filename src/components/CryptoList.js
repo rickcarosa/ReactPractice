@@ -16,7 +16,6 @@ const CryptoList = ({
         <ListItem
           cryptoListItems={cryptoListItems}
           handleRemoveCrypto={handleRemoveCrypto}
-          image={image}
           handleUpdateCrypto={handleUpdateCrypto}
         />
       </div>
