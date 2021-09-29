@@ -15,6 +15,7 @@ export const BorderContainer = styled.div`
   height: 80vh;
   border-radius: 50px;
   border: 3px ${colors.black} solid;
+  overflow: auto;
 
   @media screen and (max-width: 1000px) {
       min-width: 60%;
@@ -22,6 +23,14 @@ export const BorderContainer = styled.div`
 
   @media screen and (min-width: 1201px) {
       max-width 30%;
+  }
+  
+  @media screen and (min-width: 1301px) {
+      max-width 25%;
+  }
+  
+  @media screen and (min-width: 1501px) {
+      max-width 20%;
   }
 `;
 
@@ -63,6 +72,8 @@ export const AlignItems = styled.div`
   align-items: ${(props) => props.alignItems || 'center'};
   justify-content: ${(props) => props.justifyContent || 'center'};
   margin: ${(props) => props.margin};
+  width: ${(props) => props.width};
+  flex-direction: ${(props) => props.flexDirection};
 `;
 
 export const AddContainer = styled.div`
@@ -70,10 +81,13 @@ export const AddContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  button {
+    margin-left: auto;
+  }
 `;
 
 export const Input = styled.input`
-  width: 100%;
   font-size: 1rem;
   margin-top: 10px;
   padding: 10px 5px;
@@ -85,4 +99,35 @@ export const Input = styled.input`
   }
 `;
 
-export const Button = styled.button``;
+export const Button = styled.button`
+  width: 7rem;
+  font-size: 1rem;
+  background: ${colors.yellow};
+  color: ${colors.blue};
+  padding: 10px 0;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+`;
+
+export const ItemContainer = styled.div`
+  margin: 30px 20px 10px;
+
+  .remove {
+    display: none;
+  }
+
+  .item-wrapper:hover {
+    .remove {
+      display: flex;
+      justify-content: center;
+      cursor: pointer;
+    }
+  }
+`;

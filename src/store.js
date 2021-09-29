@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import promise from 'redux-promise-middleware';
 import { createLogger } from 'redux-logger';
-// import rootReducer from './reducers/index';
+import rootReducer from './reducers/index';
 
 // shows log of actions fired in redux in the dev console
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -21,7 +21,7 @@ if (process.env.NODE_ENV !== 'production') {
 // redux promise middleware will append FULFILLED, REJECTED, PENDING to api calls, see actions/reducer files
 const configureStore = () => {
   const store = createStore(
-    // rootReducer,
+    rootReducer,
     composeEnhancers(applyMiddleware(...middleware))
   );
   return store;
